@@ -1,33 +1,29 @@
 package main
 
 import (
-	"net/http"
 	"time"
 
-	"github.com/prometheus/client_golang/prometheus"
-	"github.com/prometheus/client_golang/prometheus/promauto"
-	"github.com/prometheus/client_golang/prometheus/promhttp"
-)
-
-func recordMetrics() {
-	go func() {
-		for {
-			opsProcessed.Inc()
-			time.Sleep(2 * time.Second)
-		}
-	}()
-}
-
-var (
-	opsProcessed = promauto.NewCounter(prometheus.CounterOpts{
-		Name: "goapp_processed_ops_total",
-		Help: "The total number of processed events",
-	})
+	"github.com/gin-gonic/gin"
+	ginprometheus "github.com/zsais/go-gin-prometheus"
 )
 
 func main() {
-	recordMetrics()
+	r := gin.New()
+	p := ginprometheus.NewPrometheus("go_sli_slo_app")
+	p.Use(r)
 
-	http.Handle("/metrics", promhttp.Handler())
-	http.ListenAndServe(":2112", nil)
+	r.GET("/fast_response", func(c *gin.Context) {
+		c.JSON(200, "Fast Response :)")
+	})
+
+	r.GET("/slow_response", func(c *gin.Context) {
+		time.Sleep(10 * time.Second)
+		c.JSON(200, "Slow Response :(")
+	})
+
+	r.GET("/error_response", func(c *gin.Context) {
+		c.JSON(500, "Error Response")
+	})
+
+	r.Run(":2112")
 }
