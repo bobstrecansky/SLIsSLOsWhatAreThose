@@ -36,7 +36,7 @@ services:
       - ./alertmanager/:/etc/alertmanager/
     restart: always
     command:
-      - "--config.file=/etc/alertmanager/config.yaml"
+      - "--config.file=/etc/alertmanager/alertmanager.yaml"
       - "--storage.path=/alertmanager"
   grafana:
     image: grafana/grafana
@@ -51,3 +51,10 @@ services:
     env_file:
       - ./grafana/config
     restart: always
+  mailhog:
+    image: mailhog/mailhog
+    networks:
+      - slislo
+    ports:
+      - 1025:1025 # smtp server
+      - 8025:8025 # web ui
