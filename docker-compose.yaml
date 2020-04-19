@@ -9,6 +9,8 @@ services:
     build: ./goapp
     networks:
       - slislo
+    ports:
+      - 2112:2112
   prometheus:
     image: prom/prometheus
     volumes:
