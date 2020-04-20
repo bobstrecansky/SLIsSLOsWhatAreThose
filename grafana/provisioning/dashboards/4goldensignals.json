@@ -15,13 +15,11 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 3,
+  "id": 1,
   "links": [],
   "panels": [
     {
-      "aliasColors": {
-        "Error Rate": "green"
-      },
+      "aliasColors": {},
       "bars": false,
       "dashLength": 10,
       "dashes": false,
@@ -29,13 +27,12 @@
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
-        "h": 5,
-        "w": 24,
+        "h": 9,
+        "w": 12,
         "x": 0,
         "y": 0
       },
-      "hiddenSeries": false,
-      "id": 5,
+      "id": 2,
       "legend": {
         "avg": false,
         "current": false,
@@ -61,26 +58,15 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(rate(go_sli_slo_app_requests_total[1m]))",
-          "interval": "",
-          "legendFormat": "Request Count",
+          "expr": "sum(rate(requests[1m]))",
           "refId": "A"
         }
       ],
-      "thresholds": [
-        {
-          "colorMode": "critical",
-          "fill": false,
-          "line": true,
-          "op": "gt",
-          "value": 25,
-          "yaxis": "left"
-        }
-      ],
+      "thresholds": [],
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Request Count",
+      "title": "Request Rate",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -118,9 +104,7 @@
       }
     },
     {
-      "aliasColors": {
-        "Error Rate": "super-light-red"
-      },
+      "aliasColors": {},
       "bars": false,
       "dashLength": 10,
       "dashes": false,
@@ -128,13 +112,12 @@
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
-        "h": 7,
-        "w": 24,
-        "x": 0,
-        "y": 5
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 0
       },
-      "hiddenSeries": false,
-      "id": 2,
+      "id": 4,
       "legend": {
         "avg": false,
         "current": false,
@@ -160,22 +143,96 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(rate(go_sli_slo_app_requests_total{code!~\"^2.*\"}[15m])) / sum(rate(go_sli_slo_app_requests_total[15m]))",
-          "interval": "",
-          "legendFormat": "Error Rate",
+          "expr": "latency_bucket",
           "refId": "A"
         }
       ],
-      "thresholds": [
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Duration Latency Buckets",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
         {
-          "colorMode": "critical",
-          "fill": false,
-          "line": true,
-          "op": "gt",
-          "value": 0.1,
-          "yaxis": "left"
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
         }
       ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": null,
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 9
+      },
+      "id": 6,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "dataLinks": []
+      },
+      "percentage": false,
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "(sum(requests {code!=\"200\"})) /((sum(requests {code=\"200\"})) + sum(requests {code!=\"200\"}))",
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
@@ -225,13 +282,12 @@
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
-        "h": 6,
-        "w": 24,
-        "x": 0,
-        "y": 12
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 9
       },
-      "hiddenSeries": false,
-      "id": 4,
+      "id": 8,
       "legend": {
         "avg": false,
         "current": false,
@@ -257,26 +313,15 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(go_sli_slo_app_request_duration_seconds_sum) /  sum(go_sli_slo_app_requests_total)",
-          "interval": "",
-          "legendFormat": "Request Duration",
+          "expr": "saturation",
           "refId": "A"
         }
       ],
-      "thresholds": [
-        {
-          "colorMode": "critical",
-          "fill": true,
-          "line": true,
-          "op": "gt",
-          "value": 2,
-          "yaxis": "left"
-        }
-      ],
+      "thresholds": [],
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Average Request Duration",
+      "title": "Saturation",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -314,14 +359,14 @@
       }
     }
   ],
-  "schemaVersion": 22,
+  "schemaVersion": 20,
   "style": "dark",
   "tags": [],
   "templating": {
     "list": []
   },
   "time": {
-    "from": "now-1h",
+    "from": "now-30m",
     "to": "now"
   },
   "timepicker": {
@@ -339,10 +384,7 @@
     ]
   },
   "timezone": "",
-  "title": "RED Metrics for goapp",
-  "uid": "AUAQcO3Zz",
-  "variables": {
-    "list": []
-  },
-  "version": 2
+  "title": "Four Golden Signals",
+  "uid": "TMKDVu1Wk",
+  "version": 1
 }
