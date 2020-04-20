@@ -53,10 +53,3 @@ services:
     env_file:
       - ./grafana/config
     restart: always
-  mailhog:
-    image: mailhog/mailhog
-    networks:
-      - slislo
-    ports:
-      - 1025:1025 # smtp server
-      - 8025:8025 # web ui

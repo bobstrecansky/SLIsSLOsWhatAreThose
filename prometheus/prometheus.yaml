@@ -24,11 +24,11 @@ alerting:
 # Here it's Prometheus itself.
 scrape_configs:
   # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
-- job_name: goapp
+- job_name: slislo
   scrape_interval: 10s
   static_configs:
     - targets: ['goapp:2112']
-- job_name: prometheus
-  scrape_interval: 5s
-  static_configs:
-    - targets: ['localhost:9090']
+#- job_name: prometheus
+#  scrape_interval: 5s
+#  static_configs:
+#    - targets: ['localhost:9090']

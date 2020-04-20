@@ -1,11 +1,11 @@
 groups:
 - name: slislo
   rules:
-  - alert: GoappNotResponding
-    expr: up == 0
-    for: 1m
+  - alert: GoappErroring
+    expr: go_sli_slo_app_requests_total{code="500"} > 0
+    #for: 10s
     annotations:
-      title: 'Instance {{ $labels.instance }} down'
-      description: '{{ $labels.instance }} of job {{ $labels.job }} has been down for more than 1 minute.'
+      title: 'Instance {{ $labels.instance }} is erroring'
+      description: '{{ $labels.instance }} of job {{ $labels.job }} has thrown errors'
     labels:
       severity: 'critical'
