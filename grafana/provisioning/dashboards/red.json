@@ -15,11 +15,13 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 1,
+  "id": 2,
   "links": [],
   "panels": [
     {
-      "aliasColors": {},
+      "aliasColors": {
+        "Rate of 500 Status Code": "dark-purple"
+      },
       "bars": false,
       "dashLength": 10,
       "dashes": false,
@@ -27,11 +29,12 @@
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
-        "h": 9,
-        "w": 12,
+        "h": 7,
+        "w": 24,
         "x": 0,
         "y": 0
       },
+      "hiddenSeries": false,
       "id": 2,
       "legend": {
         "avg": false,
@@ -58,11 +61,30 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(rate(requests[1m]))",
+          "expr": "rate(requests[1m])",
+          "interval": "",
+          "legendFormat": "Rate of {{code}} Status Code",
           "refId": "A"
         }
       ],
-      "thresholds": [],
+      "thresholds": [
+        {
+          "colorMode": "warning",
+          "fill": false,
+          "line": true,
+          "op": "gt",
+          "value": 1,
+          "yaxis": "left"
+        },
+        {
+          "colorMode": "critical",
+          "fill": true,
+          "line": true,
+          "op": "gt",
+          "value": 2,
+          "yaxis": "left"
+        }
+      ],
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
@@ -112,96 +134,12 @@
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
-        "h": 9,
-        "w": 12,
-        "x": 12,
-        "y": 0
-      },
-      "id": 4,
-      "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "show": true,
-        "total": false,
-        "values": false
-      },
-      "lines": true,
-      "linewidth": 1,
-      "nullPointMode": "null",
-      "options": {
-        "dataLinks": []
-      },
-      "percentage": false,
-      "pointradius": 2,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "expr": "latency_bucket",
-          "refId": "A"
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "Duration Latency Buckets",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        },
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": null,
-      "fill": 1,
-      "fillGradient": 0,
-      "gridPos": {
-        "h": 8,
-        "w": 12,
+        "h": 7,
+        "w": 24,
         "x": 0,
-        "y": 9
+        "y": 7
       },
+      "hiddenSeries": false,
       "id": 6,
       "legend": {
         "avg": false,
@@ -228,11 +166,31 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "(sum(requests {code!=\"200\"})) /((sum(requests {code=\"200\"})) + sum(requests {code!=\"200\"}))",
-          "refId": "A"
+          "expr": "sum(rate(requests {code!=\"200\"}[10m])) \n/ \nsum(rate(requests[10m]))",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "Ratio of Error Responses",
+          "refId": "B"
         }
       ],
-      "thresholds": [],
+      "thresholds": [
+        {
+          "colorMode": "warning",
+          "fill": false,
+          "line": true,
+          "op": "gt",
+          "value": 0.05,
+          "yaxis": "left"
+        },
+        {
+          "colorMode": "critical",
+          "fill": true,
+          "line": true,
+          "op": "gt",
+          "value": 0.1,
+          "yaxis": "left"
+        }
+      ],
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
@@ -282,12 +240,13 @@
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 12,
-        "y": 9
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 14
       },
-      "id": 8,
+      "hiddenSeries": false,
+      "id": 4,
       "legend": {
         "avg": false,
         "current": false,
@@ -313,15 +272,34 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "saturation",
+          "expr": "histogram_quantile(0.95, sum(rate(duration_bucket[5m])) by (le))",
+          "interval": "",
+          "legendFormat": "95th Percentile Duration",
           "refId": "A"
         }
       ],
-      "thresholds": [],
+      "thresholds": [
+        {
+          "colorMode": "warning",
+          "fill": false,
+          "line": true,
+          "op": "gt",
+          "value": 0.25,
+          "yaxis": "left"
+        },
+        {
+          "colorMode": "critical",
+          "fill": true,
+          "line": true,
+          "op": "gt",
+          "value": 0.5,
+          "yaxis": "left"
+        }
+      ],
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Saturation",
+      "title": "Duration Latency Buckets",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -341,7 +319,7 @@
           "label": null,
           "logBase": 1,
           "max": null,
-          "min": null,
+          "min": "0",
           "show": true
         },
         {
@@ -359,14 +337,15 @@
       }
     }
   ],
-  "schemaVersion": 20,
+  "refresh": false,
+  "schemaVersion": 22,
   "style": "dark",
   "tags": [],
   "templating": {
     "list": []
   },
   "time": {
-    "from": "now-30m",
+    "from": "now-15m",
     "to": "now"
   },
   "timepicker": {
@@ -384,7 +363,10 @@
     ]
   },
   "timezone": "",
-  "title": "Four Golden Signals",
-  "uid": "TMKDVu1Wk",
+  "title": "RED Metrics Dashboard",
+  "uid": "o0_KG03Zz",
+  "variables": {
+    "list": []
+  },
   "version": 1
 }

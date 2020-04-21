@@ -53,3 +53,13 @@ services:
     env_file:
       - ./grafana/config
     restart: always
+  loadtest:
+    build: ./loadtest
+    networks:
+      - slislo
+    depends_on:
+      - goapp
+      - prometheus
+      - alertmanager
+      - grafana
+
