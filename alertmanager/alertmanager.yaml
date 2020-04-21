@@ -8,8 +8,15 @@ receivers:
   email_configs:
   - smarthost: smtp.gmail.com:587
     send_resolved: true
+<<<<<<< HEAD
     to: EMAIL
     from: EMAIL
     auth_username: EMAIL
     auth_identity: EMAIL
+=======
+    to: EMAILADDRESS
+    from: EMAILADDRESS 
+    auth_username: EMAILADDRESS
+    auth_identity: EMAILADDRESS
+>>>>>>> 52d091c82d447a2558ff1dc342f7f083b961978d
     auth_password: PASSWORD
