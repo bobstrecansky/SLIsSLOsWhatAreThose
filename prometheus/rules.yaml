@@ -2,11 +2,7 @@ groups:
 - name: slislo
   rules:
   - alert: GoappErroring
-<<<<<<< HEAD
     expr: sum(rate(requests{code="500"}[1m])) > 0.1
-=======
-    expr: sum(rate(requests{code!="200"}[10m])) > 0.1
->>>>>>> 52d091c82d447a2558ff1dc342f7f083b961978d
     for: 1m
     annotations:
       title: '{{ $labels.job }} is erroring'
