@@ -1,6 +1,4 @@
 global:
-  smtp_smarthost: 'mailhog:1025'
-  smtp_from: 'alertmanager@example.org'
 
 route:
   receiver: 'team-X-mails'
@@ -8,10 +6,10 @@ route:
 receivers:
 - name: 'team-X-mails'
   email_configs:
-  - to: bob.strecansky@gmail.com
-    from: bob.strecansky@gmail.com
-    smarthost: smtp.gmail.com:587
-    auth_username: bob.strecansky@gmail.com
-    auth_identity: bob.strecansky@gmail.com
-    auth_password: CHANGEME
+  - smarthost: smtp.gmail.com:587
     send_resolved: true
+    to: EMAIL
+    from: EMAIL
+    auth_username: EMAIL
+    auth_identity: EMAIL
+    auth_password: PASSWORD

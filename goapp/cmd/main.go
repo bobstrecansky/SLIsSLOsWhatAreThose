@@ -40,7 +40,7 @@ func main() {
 
 	errorSignalHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		start := time.Now()
-		sleepTime := rand.Intn(100)
+		sleepTime := rand.Intn(1000)
 		time.Sleep(time.Duration(sleepTime) * time.Millisecond)
 		elapsed := time.Since(start)
 		http.Error(w, "Server Error", http.StatusInternalServerError)

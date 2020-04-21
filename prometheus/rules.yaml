@@ -2,10 +2,10 @@ groups:
 - name: slislo
   rules:
   - alert: GoappErroring
-    expr: go_sli_slo_app_requests_total{code="500"} > 0
-    #for: 10s
+    expr: sum(rate(requests{code="500"}[1m])) > 0.1
+    for: 1m
     annotations:
-      title: 'Instance {{ $labels.instance }} is erroring'
-      description: '{{ $labels.instance }} of job {{ $labels.job }} has thrown errors'
+      title: '{{ $labels.job }} is erroring'
+      description: 'Our program {{ $labels.job }} has an error rate of greater than 10%.  You can see the RED metrics for this chart at the following URL: http://localhost:3000/d/o0_KG03Zz/red-metrics-dashboard?orgId=1'
     labels:
       severity: 'critical'

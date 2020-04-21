@@ -15,7 +15,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 2,
+  "id": 1,
   "links": [],
   "panels": [
     {
@@ -61,7 +61,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "rate(requests[1m])",
+          "expr": "sum(rate(requests[1m]))",
           "interval": "",
           "legendFormat": "Rate of {{code}} Status Code",
           "refId": "A"
@@ -88,7 +88,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Request Rate",
+      "title": "Request Rate (Requests / Minute)",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -104,11 +104,12 @@
       },
       "yaxes": [
         {
+          "decimals": null,
           "format": "short",
           "label": null,
           "logBase": 1,
-          "max": null,
-          "min": null,
+          "max": "2",
+          "min": "0",
           "show": true
         },
         {
@@ -127,7 +128,7 @@
     },
     {
       "aliasColors": {},
-      "bars": false,
+      "bars": true,
       "dashLength": 10,
       "dashes": false,
       "datasource": null,
@@ -166,7 +167,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(rate(requests {code!=\"200\"}[10m])) \n/ \nsum(rate(requests[10m]))",
+          "expr": "sum(rate(requests {code=\"500\"}[1m])) \n/ \nsum(rate(requests[1m]))",
           "hide": false,
           "interval": "",
           "legendFormat": "Ratio of Error Responses",
@@ -194,7 +195,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Error Rate",
+      "title": "Error Rate (Requests / Minute)",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -210,11 +211,12 @@
       },
       "yaxes": [
         {
+          "decimals": null,
           "format": "short",
           "label": null,
           "logBase": 1,
-          "max": null,
-          "min": null,
+          "max": "1",
+          "min": "0",
           "show": true
         },
         {
@@ -272,10 +274,22 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "histogram_quantile(0.95, sum(rate(duration_bucket[5m])) by (le))",
+          "expr": "histogram_quantile(0.50, sum(rate(duration_bucket[1m])) by (le))",
+          "interval": "",
+          "legendFormat": "50th Percentile Duration",
+          "refId": "A"
+        },
+        {
+          "expr": "histogram_quantile(0.95, sum(rate(duration_bucket[1m])) by (le))",
           "interval": "",
           "legendFormat": "95th Percentile Duration",
-          "refId": "A"
+          "refId": "B"
+        },
+        {
+          "expr": "histogram_quantile(0.99, sum(rate(duration_bucket[1m])) by (le))",
+          "interval": "",
+          "legendFormat": "99th Percentile Duration",
+          "refId": "C"
         }
       ],
       "thresholds": [
@@ -284,22 +298,22 @@
           "fill": false,
           "line": true,
           "op": "gt",
-          "value": 0.25,
+          "value": 0.75,
           "yaxis": "left"
         },
         {
           "colorMode": "critical",
-          "fill": true,
+          "fill": false,
           "line": true,
           "op": "gt",
-          "value": 0.5,
+          "value": 1,
           "yaxis": "left"
         }
       ],
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Duration Latency Buckets",
+      "title": "Duration Latency Buckets (Requests / Minute)",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -318,7 +332,7 @@
           "format": "short",
           "label": null,
           "logBase": 1,
-          "max": null,
+          "max": "2",
           "min": "0",
           "show": true
         },
@@ -337,7 +351,7 @@
       }
     }
   ],
-  "refresh": false,
+  "refresh": "5s",
   "schemaVersion": 22,
   "style": "dark",
   "tags": [],
