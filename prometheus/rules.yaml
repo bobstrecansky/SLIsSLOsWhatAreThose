@@ -2,8 +2,8 @@ groups:
 - name: slislo
   rules:
   - alert: GoappErroring
-    expr: go_sli_slo_app_requests_total{code="500"} > 0
-    #for: 10s
+    expr: sum(rate(requests{code!="200"}[10m])) > 0.1
+    for: 1m
     annotations:
       title: 'Instance {{ $labels.instance }} is erroring'
       description: '{{ $labels.instance }} of job {{ $labels.job }} has thrown errors'
